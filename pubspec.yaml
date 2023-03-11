@@ -1,0 +1,33 @@
+name: dti_2
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.4 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_native_splash: ^2.2.19
+
+
+  cupertino_icons: ^1.0.2
+  firebase_core: ^2.7.0
+  firebase_auth: ^4.2.9
+  get: ^4.6.5
+  image_picker: ^0.8.6+4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
