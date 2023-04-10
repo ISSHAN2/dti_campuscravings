@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "224413618818",
+    "project_id": "dtifoodapp",
+    "storage_bucket": "dtifoodapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224413618818:android:d3e906a3f0c106d3f81a9b",
+        "android_client_info": {
+          "package_name": "com.example.dti_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224413618818-47c6em6re22j59mt2d09hoovg1m2ng91.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYHueoHnBVeqlGpuxCuDDexMquNEeJOlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224413618818-47c6em6re22j59mt2d09hoovg1m2ng91.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "224413618818-ke5g7juntp1bpbnkpmq0tpi6ajce8nmr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dti2"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224413618818:android:3135def67ec66359f81a9b",
+        "android_client_info": {
+          "package_name": "com.example.dti_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224413618818-47c6em6re22j59mt2d09hoovg1m2ng91.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYHueoHnBVeqlGpuxCuDDexMquNEeJOlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224413618818-47c6em6re22j59mt2d09hoovg1m2ng91.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "224413618818-ke5g7juntp1bpbnkpmq0tpi6ajce8nmr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dti2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
