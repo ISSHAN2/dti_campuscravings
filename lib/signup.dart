@@ -1,9 +1,15 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dti_2/loading_dialog.dart';
+import 'package:dti_2/screen1.dart';
 import 'error_dialog.dart';
-import 'package:dti_2/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fStorage;
+import 'custom_text_widget.dart';
+import 'global.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -13,12 +19,16 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String email = '';
-  String password = '';
-  String name = '';
-  String phoneNo = '';
   XFile? imageXFile;
+  String Imageurl = '';
   final ImagePicker _picker = ImagePicker();
   Future<void> takePhoto(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
@@ -35,33 +45,107 @@ class _SignupState extends State<Signup> {
           context: context,
           builder: (c) {
             return const ErrorDialog(
-              message: 'Please Choose an Image',
+              message: "Please select an image.",
             );
           });
     } else {
-      if (password.isNotEmpty &&
-          email.isNotEmpty &&
-          name.isNotEmpty &&
-          phoneNo.isNotEmpty) {
-        try {
-          final newUser = await _auth.createUserWithEmailAndPassword(
-              email: email, password: password);
-          if (newUser != null) {
-            Navigator.pushNamed(context, Home.id);
-          }
-        } catch (e) {
-          print(e);
+      if (passwordController.text == confirmPasswordController.text) {
+        if (confirmPasswordController.text.isNotEmpty &&
+            emailController.text.isNotEmpty &&
+            nameController.text.isNotEmpty &&
+            phoneController.text.isNotEmpty) {
+          //start uploading image
+          showDialog(
+              context: context,
+              builder: (c) {
+                return const LoadingDialog(
+                  message: "Registering Account",
+                );
+              });
+
+          String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+          fStorage.Reference reference = fStorage.FirebaseStorage.instance
+              .ref()
+              .child("sellers")
+              .child(fileName);
+          fStorage.UploadTask uploadTask =
+              reference.putFile(File(imageXFile!.path));
+          fStorage.TaskSnapshot taskSnapshot =
+              await uploadTask.whenComplete(() {});
+          await taskSnapshot.ref.getDownloadURL().then((url) {
+            Imageurl = url;
+
+            //save info to firestore
+            authenticateSellerAndSignUp();
+          });
+        } else {
+          showDialog(
+              context: context,
+              builder: (c) {
+                return const ErrorDialog(
+                  message:
+                      "Please write the complete required info for Registration.",
+                );
+              });
         }
       } else {
         showDialog(
             context: context,
             builder: (c) {
               return const ErrorDialog(
-                message: 'Fill all the required fields',
+                message: "Password do not match.",
               );
             });
       }
     }
+  }
+
+  void authenticateSellerAndSignUp() async {
+    User? currentUser;
+
+    await firebaseAuth
+        .createUserWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    )
+        .then((auth) {
+      currentUser = auth.user;
+    }).catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (c) {
+            return ErrorDialog(
+              message: error.message.toString(),
+            );
+          });
+    });
+
+    if (currentUser != null) {
+      saveDataToFirestore(currentUser!).then((value) {
+        Navigator.pop(context);
+        Route newRoute = MaterialPageRoute(builder: (c) => Screen());
+        Navigator.pushReplacement(context, newRoute);
+      });
+    }
+  }
+
+  Future saveDataToFirestore(User currentUser) async {
+    FirebaseFirestore.instance.collection("sellers").doc(currentUser.uid).set({
+      "sellerUID": currentUser.uid,
+      "sellerEmail": currentUser.email,
+      "sellerName": nameController.text.trim(),
+      "sellerAvatarUrl": Imageurl,
+      "phone": phoneController.text.trim(),
+      "status": "approved",
+      "earnings": 0.0,
+    });
+
+    sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences!.setString("uid", currentUser.uid);
+    await sharedPreferences!.setString("email", currentUser.email.toString());
+    await sharedPreferences!.setString("name", nameController.text.trim());
+    await sharedPreferences!.setString("photoUrl", Imageurl);
   }
 
   @override
@@ -77,54 +161,35 @@ class _SignupState extends State<Signup> {
             const SizedBox(
               height: 40,
             ),
-            const Text('Full Name'),
-            TextFormField(
-              onChanged: (value) {
-                name = value;
-              },
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                  prefixIcon:
-                      Icon(Icons.account_box_rounded, color: Colors.black)),
+            CustomTextField(
+              data: Icons.person,
+              controller: nameController,
+              hintText: "Name",
+              isObsecre: false,
             ),
-            const SizedBox(
-              height: 20,
+            CustomTextField(
+              data: Icons.phone,
+              controller: phoneController,
+              hintText: "Phone",
+              isObsecre: false,
             ),
-            const Text('Phone No'),
-            TextFormField(
-              onChanged: (value) {
-                phoneNo = value;
-              },
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                  prefixIcon:
-                      Icon(Icons.account_box_rounded, color: Colors.black)),
+            CustomTextField(
+              data: Icons.email,
+              controller: emailController,
+              hintText: "Email",
+              isObsecre: false,
             ),
-            const Text('Email address'),
-            TextFormField(
-              onChanged: (value) {
-                email = value;
-              },
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.mail, color: Colors.black),
-              ),
+            CustomTextField(
+              data: Icons.lock,
+              controller: passwordController,
+              hintText: "Password",
+              isObsecre: true,
             ),
-            const SizedBox(
-              height: 40,
-            ),
-            const Text('Password'),
-            TextFormField(
-              onChanged: (value) {
-                password = value;
-              },
-              obscureText: true,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(
-                  Icons.lock,
-                  color: Colors.black,
-                ),
-              ),
+            CustomTextField(
+              data: Icons.lock,
+              controller: confirmPasswordController,
+              hintText: "Confirm Password",
+              isObsecre: true,
             ),
             const SizedBox(
               height: 7,
@@ -163,14 +228,15 @@ class _SignupState extends State<Signup> {
 
   Widget ImageFile() {
     return Center(
-      child: Stack(children: <Widget>[
-        CircleAvatar(
-          radius: MediaQuery.of(context).size.width * 0.20,
-          backgroundImage: imageXFile == null
-              ? null
-              : FileImage(File(imageXFile!.path)) as ImageProvider<Object>?,
-        ),
-        Positioned(
+      child: Stack(
+        children: <Widget>[
+          CircleAvatar(
+            radius: MediaQuery.of(context).size.width * 0.20,
+            backgroundImage: imageXFile == null
+                ? null
+                : FileImage(File(imageXFile!.path)) as ImageProvider<Object>?,
+          ),
+          Positioned(
             bottom: 20,
             right: 20,
             child: InkWell(
@@ -183,8 +249,10 @@ class _SignupState extends State<Signup> {
                 color: Colors.teal,
                 size: 40,
               ),
-            ))
-      ]),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -211,6 +279,7 @@ class _SignupState extends State<Signup> {
               ElevatedButton.icon(
                 onPressed: () {
                   takePhoto(ImageSource.camera);
+                  Navigator.pop(context);
                 },
                 icon: const Icon(Icons.camera),
                 label: const Text('Camera'),
@@ -218,6 +287,7 @@ class _SignupState extends State<Signup> {
               ElevatedButton.icon(
                   onPressed: () {
                     takePhoto(ImageSource.gallery);
+                    Navigator.pop(context);
                   },
                   icon: const Icon(Icons.image),
                   label: const Text("Gallery"))
