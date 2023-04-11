@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:dti_2/signup.dart';
 import 'login.dart';
 
-class logsign extends StatefulWidget {
-  static const String id = 'logsign';
-  const logsign({super.key});
+class LogSign extends StatefulWidget {
+  static const String id = 'LogSign';
+  const LogSign({super.key});
 
   @override
-  State<logsign> createState() => _logsignState();
+  State<LogSign> createState() => _LogSignState();
 }
 
-class _logsignState extends State<logsign> {
+class _LogSignState extends State<LogSign> {
   @override
   void initState() {
     super.initState();
@@ -47,7 +47,7 @@ class _logsignState extends State<logsign> {
                         style: TextStyle(color: Colors.black)))
               ]),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [Login(), Signup()],
         ),
       ),

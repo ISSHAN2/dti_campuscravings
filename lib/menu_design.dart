@@ -34,7 +34,7 @@ class MenuDesign extends StatelessWidget {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.deepOrange),
+                              backgroundColor: Colors.deepOrange),
                           onPressed: () {},
                           child: const Text(
                             "Add To Cart",

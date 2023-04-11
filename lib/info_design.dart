@@ -20,7 +20,9 @@ class _InfoDesignState extends State<InfoDesign> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (c) => MenuScreens(model: widget.model)));
+                builder: (c) => MenuScreens(
+                      model: widget.model,
+                    )));
       },
       child: Column(
         children: [

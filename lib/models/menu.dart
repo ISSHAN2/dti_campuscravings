@@ -29,7 +29,7 @@ class Menus {
     thumbnailUrl = json["thumbnailUrl"];
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data["menuID"] = menuID;
     data["sellerUID"] = sellerUID;
     data["menuTitle"] = menuTitle;

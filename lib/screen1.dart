@@ -16,9 +16,9 @@ class _ScreenState extends State<Screen> {
   @override
   Widget build(BuildContext context) {
     return ZoomDrawer(
-      menuScreen: Menu(),
-      mainScreen: Home(),
-      duration: Duration(milliseconds: 200),
+      menuScreen: const Menu(),
+      mainScreen: const Home(),
+      duration: const Duration(milliseconds: 200),
       style: DrawerStyle.defaultStyle,
       openCurve: Curves.fastOutSlowIn,
       menuBackgroundColor: Colors.white,

@@ -97,7 +97,7 @@ class _MenuState extends State<Menu> {
               ),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
-                Navigator.pushNamed(context, logsign.id);
+                Navigator.pushNamed(context, LogSign.id);
               },
             ),
           ],

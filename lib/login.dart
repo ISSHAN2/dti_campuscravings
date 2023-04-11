@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dti_2/error_dialog.dart';
 import 'package:dti_2/global.dart';
-import 'package:dti_2/logsign.dart';
+import 'package:dti_2/LogSign.dart';
 import 'package:dti_2/screen1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import "loading_dialog.dart";
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -16,9 +17,57 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   String email = '';
   String password = '';
+  formValidation() {
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      //login
+      loginNow();
+    } else {
+      showDialog(
+          context: context,
+          builder: (c) {
+            return const ErrorDialog(
+              message: "Please write email/password.",
+            );
+          });
+    }
+  }
+
+  loginNow() async {
+    showDialog(
+        context: context,
+        builder: (c) {
+          return const LoadingDialog(
+            message: "Checking Credentials",
+          );
+        });
+
+    User? currentUser;
+    await firebaseAuth
+        .signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    )
+        .then((auth) {
+      currentUser = auth.user!;
+    }).catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (c) {
+            return ErrorDialog(
+              message: error.message.toString(),
+            );
+          });
+    });
+    if (currentUser != null) {
+      readDataAndSetLocally(currentUser!).then((value) {
+        Navigator.pushNamed(context, Screen.id);
+      });
+    }
+  }
+
   Future readDataAndSetLocally(User currentUser) async {
     await FirebaseFirestore.instance
         .collection("users")
@@ -42,7 +91,7 @@ class _LoginState extends State<Login> {
               );
             });
         firebaseAuth.signOut();
-        Navigator.pushNamed(context, logsign.id);
+        Navigator.pushNamed(context, LogSign.id);
       }
     });
   }
@@ -95,23 +144,11 @@ class _LoginState extends State<Login> {
             const SizedBox(
               height: 30,
             ),
-            Container(
+            SizedBox(
               width: 150,
               child: RawMaterialButton(
                 onPressed: () async {
-                  try {
-                    User? currentUser;
-                    await _auth.signInWithEmailAndPassword(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim());
-                    if (currentUser != null) {
-                      readDataAndSetLocally(currentUser).then((value) {
-                        Navigator.pushNamed(context, Screen.id);
-                      });
-                    }
-                  } catch (e) {
-                    print(e);
-                  }
+                  formValidation();
                 },
                 fillColor: Colors.deepOrange,
                 shape: RoundedRectangleBorder(

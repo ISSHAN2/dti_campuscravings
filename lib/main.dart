@@ -27,11 +27,11 @@ class MyWidget extends StatelessWidget {
       initialRoute: MySplashScreen.id,
       routes: {
         MySplashScreen.id: (context) => const MySplashScreen(),
-        logsign.id: (context) => const logsign(),
+        LogSign.id: (context) => const LogSign(),
         Screen.id: (context) => const Screen(),
         Home.id: (context) => const Home(),
         MenuScreens.id: (context) => const MenuScreens(),
-        Profile.id: (context) => Profile(),
+        Profile.id: (context) => const Profile(),
       },
     );
   }

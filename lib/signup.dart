@@ -6,6 +6,7 @@ import 'error_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+// ignore: library_prefixes
 import 'package:firebase_storage/firebase_storage.dart' as fStorage;
 import 'custom_text_widget.dart';
 import 'global.dart';
@@ -26,8 +27,8 @@ class _SignupState extends State<Signup> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController locationController = TextEditingController();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   XFile? imageXFile;
+  // ignore: non_constant_identifier_names
   String Imageurl = '';
   final ImagePicker _picker = ImagePicker();
   Future<void> takePhoto(ImageSource source) async {
@@ -44,7 +45,7 @@ class _SignupState extends State<Signup> {
       showDialog(
           context: context,
           builder: (c) {
-            return ErrorDialog(
+            return const ErrorDialog(
               message: "Please select an image.",
             );
           });
@@ -58,7 +59,7 @@ class _SignupState extends State<Signup> {
           showDialog(
               context: context,
               builder: (c) {
-                return LoadingDialog(
+                return const LoadingDialog(
                   message: "Registering Account",
                 );
               });
@@ -82,7 +83,7 @@ class _SignupState extends State<Signup> {
           showDialog(
               context: context,
               builder: (c) {
-                return ErrorDialog(
+                return const ErrorDialog(
                   message:
                       "Please write the complete required info for Registration.",
                 );
@@ -92,7 +93,7 @@ class _SignupState extends State<Signup> {
         showDialog(
             context: context,
             builder: (c) {
-              return ErrorDialog(
+              return const ErrorDialog(
                 message: "Password do not match.",
               );
             });
@@ -124,7 +125,7 @@ class _SignupState extends State<Signup> {
     if (currentUser != null) {
       saveDataToFirestore(currentUser!).then((value) {
         Navigator.pop(context);
-        Route newRoute = MaterialPageRoute(builder: (c) => Screen());
+        Route newRoute = MaterialPageRoute(builder: (c) => const Screen());
         Navigator.pushReplacement(context, newRoute);
       });
     }
@@ -227,6 +228,7 @@ class _SignupState extends State<Signup> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget ImageFile() {
     return Center(
       child: Stack(

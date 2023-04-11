@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:dti_2/screen1.dart';
 import 'package:flutter/material.dart';
-import 'logsign.dart';
+import 'LogSign.dart';
 import 'global.dart';
-import 'home.dart';
 
 class MySplashScreen extends StatefulWidget {
   static const String id = 'splash';
   const MySplashScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _MySplashScreenState createState() => _MySplashScreenState();
 }
 
@@ -25,7 +25,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       //if seller is NOT loggedin already
       else {
         Navigator.push(
-            context, MaterialPageRoute(builder: (c) => const logsign()));
+            context, MaterialPageRoute(builder: (c) => const LogSign()));
       }
     });
   }

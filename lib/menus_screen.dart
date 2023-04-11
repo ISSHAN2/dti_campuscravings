@@ -21,11 +21,6 @@ class _MenuScreensState extends State<MenuScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.post_add, color: Colors.deepOrange))
-          ],
           backgroundColor: Colors.transparent,
           bottomOpacity: 0.0,
           elevation: 0.0,
@@ -37,42 +32,39 @@ class _MenuScreensState extends State<MenuScreens> {
                 Icons.menu,
                 color: Colors.black38,
               ))),
-      body: Column(
-        children: [
-          const Text("Menu"),
-          CustomScrollView(
-            slivers: [
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("sellers")
-                    .doc(widget.model!.sellerUID)
-                    .collection('menus')
-                    .orderBy("publishedDate", descending: true)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  return !snapshot.hasData
-                      ? SliverToBoxAdapter(
-                          child: Center(
-                            child: circularProgress(),
-                          ),
-                        )
-                      : SliverStaggeredGrid.countBuilder(
-                          crossAxisCount: 1,
-                          staggeredTileBuilder: (c) =>
-                              const StaggeredTile.fit(1),
-                          itemBuilder: (context, index) {
-                            Menus rmodel = Menus.fromJson(
-                              snapshot.data!.docs[index].data()!
-                                  as Map<String, dynamic>,
-                            );
-                            return MenuDesign(model: rmodel, context: context);
-                          },
-                          itemCount: snapshot.data!.docs.length);
-                },
-              )
-            ],
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 100),
+        child: CustomScrollView(
+          slivers: [
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("sellers")
+                  .doc(widget.model!.sellerUID)
+                  .collection('menus')
+                  .orderBy("publishedDate", descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                return !snapshot.hasData
+                    ? SliverToBoxAdapter(
+                        child: Center(
+                          child: circularProgress(),
+                        ),
+                      )
+                    : SliverStaggeredGrid.countBuilder(
+                        crossAxisCount: 1,
+                        staggeredTileBuilder: (c) => const StaggeredTile.fit(1),
+                        itemBuilder: (context, index) {
+                          Menus rmodel = Menus.fromJson(
+                            snapshot.data!.docs[index].data()!
+                                as Map<String, dynamic>,
+                          );
+                          return MenuDesign(model: rmodel, context: context);
+                        },
+                        itemCount: snapshot.data!.docs.length);
+              },
+            )
+          ],
+        ),
       ),
     );
   }
