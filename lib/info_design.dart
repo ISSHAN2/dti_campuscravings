@@ -15,62 +15,70 @@ class InfoDesign extends StatefulWidget {
 class _InfoDesignState extends State<InfoDesign> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (c) => MenuScreens(
-                      model: widget.model,
-                    )));
-      },
-      child: Column(
-        children: [
-          InkWell(
-            splashColor: Colors.amber,
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      width: 5,
-                      color: const Color.fromARGB(255, 227, 227, 227))),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  child: Column(children: [
-                    Image.network(
-                      widget.model.sellerAvatarUrl!,
-                      fit: BoxFit.scaleDown,
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Text(
-                      widget.model.sellerName!,
-                      style: const TextStyle(
-                        color: Colors.deepOrange,
-                        fontSize: 20,
-                        fontFamily: "Poppins",
-                      ),
-                    ),
-                    const Divider(
-                      height: 3,
-                      thickness: 2,
-                      color: Color.fromARGB(255, 201, 200, 200),
-                    ),
-                    const SizedBox(
-                      height: 25.0,
-                    ),
-                  ]),
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (c) => MenuScreens(
+                          model: widget.model,
+                        )));
+          },
+          splashColor: Colors.amber,
+          child: Padding(
+            padding: const EdgeInsets.all(1),
+            child: SizedBox(
+              child: Column(children: [
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: SizedBox.fromSize(
+                            size: const Size.fromRadius(68),
+                            child: Image.network(widget.model.sellerAvatarUrl!,
+                                fit: BoxFit.cover),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            widget.model.sellerName!,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 25,
+                                fontFamily: "Proxima Nova",
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+              ]),
             ),
           ),
-          const SizedBox(
-            height: 55,
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
