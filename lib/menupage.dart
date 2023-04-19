@@ -80,7 +80,7 @@ class _MenuState extends State<Menu> {
               ],
             ),
             const SizedBox(
-              height: 300,
+              height: 150,
             ),
             TextButton(
               child: Row(

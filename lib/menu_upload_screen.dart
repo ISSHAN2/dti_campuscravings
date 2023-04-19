@@ -21,6 +21,7 @@ class _MenuUpState extends State<MenuUp> {
   final ImagePicker _picker = ImagePicker();
   TextEditingController shortInfoController = TextEditingController();
   TextEditingController titlecontroller = TextEditingController();
+  TextEditingController pricecontroller = TextEditingController();
   bool uploading = false;
   String uniqueIdName = DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -159,7 +160,7 @@ class _MenuUpState extends State<MenuUp> {
           },
         ),
         title: const Text(
-          "New Menus",
+          "New Items",
           style: TextStyle(color: Colors.deepOrange),
         ),
         actions: [
@@ -205,7 +206,7 @@ class _MenuUpState extends State<MenuUp> {
                 style: const TextStyle(color: Colors.black),
                 controller: titlecontroller,
                 decoration: const InputDecoration(
-                    hintText: "Menu Title", border: InputBorder.none),
+                    hintText: "Item Title", border: InputBorder.none),
               ),
             ),
           ),
@@ -215,7 +216,7 @@ class _MenuUpState extends State<MenuUp> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.info,
+              Icons.info_outline,
               color: Colors.deepOrange,
             ),
             title: SizedBox(
@@ -224,7 +225,27 @@ class _MenuUpState extends State<MenuUp> {
                 style: const TextStyle(color: Colors.black),
                 controller: shortInfoController,
                 decoration: const InputDecoration(
-                    hintText: "Menu Info", border: InputBorder.none),
+                    hintText: "Item Info", border: InputBorder.none),
+              ),
+            ),
+          ),
+          const Divider(
+            color: Color.fromARGB(255, 206, 206, 206),
+            thickness: 2,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.currency_rupee_outlined,
+              color: Colors.deepOrange,
+            ),
+            title: SizedBox(
+              width: 250,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.black),
+                controller: pricecontroller,
+                decoration: const InputDecoration(
+                    hintText: "Item Price", border: InputBorder.none),
               ),
             ),
           )
@@ -288,6 +309,7 @@ class _MenuUpState extends State<MenuUp> {
       "sellerUID": sharedPreferences!.getString("uid"),
       "menuInfo": shortInfoController.text.toString(),
       "menuTitle": titlecontroller.text.toString(),
+      "menuPrice": pricecontroller.text.toString(),
       "publishedDate": DateTime.now(),
       "status": "available",
       "thumbnailUrl": downloadUrl,

@@ -5,6 +5,7 @@ class Menus {
   String? sellerUID;
   String? menuInfo;
   String? menuTitle;
+  String? menuPrice;
   Timestamp? publishedDate;
   String? status;
   String? thumbnailUrl;
@@ -13,6 +14,7 @@ class Menus {
     this.menuID,
     this.menuInfo,
     this.menuTitle,
+    this.menuPrice,
     this.publishedDate,
     this.sellerUID,
     this.status,
@@ -24,6 +26,7 @@ class Menus {
     sellerUID = json["sellerUID"];
     menuTitle = json["menuTitle"];
     publishedDate = json["publishedDate"];
+    menuPrice = json["menuPrice"];
     menuInfo = json["menuInfo"];
     status = json["status"];
     thumbnailUrl = json["thumbnailUrl"];
@@ -33,6 +36,7 @@ class Menus {
     data["menuID"] = menuID;
     data["sellerUID"] = sellerUID;
     data["menuTitle"] = menuTitle;
+    data["menuPrice"] = menuPrice;
     data["publishedDate"] = publishedDate;
     data["menuInfo"] = menuInfo;
     data["status"] = status;

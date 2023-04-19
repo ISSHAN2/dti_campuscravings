@@ -138,7 +138,7 @@ class _LoginState extends State<Login> {
             const SizedBox(
               height: 30,
             ),
-            Container(
+            SizedBox(
               width: 150,
               child: RawMaterialButton(
                 onPressed: () {

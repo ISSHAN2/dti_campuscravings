@@ -59,6 +59,17 @@ class _InfoDesignState extends State<InfoDesign> {
                           height: 10.0,
                         ),
                         Text(
+                          "₹ ${widget.model!.menuPrice!}",
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 27, 125, 30),
+                              fontSize: 22,
+                              fontFamily: "Proxima Nova",
+                              fontWeight: FontWeight.w200),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
                           widget.model!.menuInfo!,
                           textAlign: TextAlign.left,
                           style: const TextStyle(
